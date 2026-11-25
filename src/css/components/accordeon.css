@@ -1,3 +1,99 @@
 /**
 * Accordeon
 */
+
+/* Conteneur */
+.accordeon {
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: system-ui, sans-serif;
+}
+
+/* Chaque élément : fermé et ouvert */
+.accordeon > details {
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+/* Ouvert */
+.accordeon > details[open] {
+  border-color: #0077cc;
+  box-shadow: 0 4px 12px rgba(0, 119, 204, 0.3);
+}
+
+/* Le summary (titre cliquable) */
+.accordeon > details > summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem 3rem 0.5rem 0.5rem;
+  background: #f4f4f4;
+  /* suppression du triangle d'origine */
+  list-style: none;
+}
+
+.accordeon > details > summary::marker,
+.accordeon > details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Image du summary : affichée à sa taille réelle (102 x 77 px)
+   pour ne jamais être agrandie, donc jamais floue */
+.accordeon > details > summary img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  border-radius: 4px;
+  filter: grayscale(100%);
+  transition: filter 0.4s;
+}
+
+.accordeon > details > summary:hover img {
+  filter: grayscale(30%);
+}
+
+.accordeon > details[open] > summary img {
+  filter: none;
+}
+
+/* Triangle CSS (bordures) */
+.accordeon > details > summary::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 14px solid #0077cc;
+  transform: translateY(-50%);
+  transition: transform 0.3s;
+}
+
+/* Triangle tourné vers le bas quand ouvert */
+.accordeon > details[open] > summary::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+/* Contenu */
+.accordeon > details > div {
+  padding: 1rem;
+}
+
+.accordeon > details > div h3 {
+  margin: 0 0 0.5rem;
+  color: #0077cc;
+}
+
+.accordeon > details > div p {
+  margin: 0;
+  color: #444;
+}
