@@ -2,15 +2,32 @@
 - prénom :
 - URL Netlify :
 
-# Travail
+# TP4 – Accordéon HTML / CSS / JS
 
-N'oublier pas votre nom, prénom et l'URL de publication Netlify...
+Accordéon construit avec les balises natives `<details>` et `<summary>`, stylé en CSS et piloté en JavaScript pour qu'un seul panneau reste ouvert à la fois.
 
-# Complétez le CSS
+## Aperçu des images
 
-**Faire plusieurs commits** pour chaque étape du CSS
+Les images sont affichées à leur **taille réelle (102 × 77 px)**, sans agrandissement, pour qu'elles restent nettes.
 
-Pour styler l'accordéon ouvert, utilisez l'attribut `open` (entre crochet en CSS `[open]` :
+<p>
+  <img src="assets/img/moodle.univ-fcomte.fr.jpeg" alt="Moodle" width="102" height="77">
+  <img src="assets/img/pracht.org.jpeg" alt="Pracht.ORG" width="102" height="77">
+  <img src="assets/img/src-media.com.jpeg" alt="SRC Média" width="102" height="77">
+</p>
+
+## Structure du projet
+
+| Fichier | Rôle |
+| --- | --- |
+| [index.html](index.html) | Page de test contenant l'accordéon |
+| [src/css/components/accordeon.css](src/css/components/accordeon.css) | Styles de l'accordéon |
+| [src/js/script.js](src/js/script.js) | Referme les autres panneaux au clic |
+| [assets/img/](assets/img/) | Images des `summary` |
+
+## 1. Le CSS
+
+L'état ouvert se cible avec l'attribut `open` :
 
 ```css
 details {
@@ -22,34 +39,44 @@ details[open] {
 }
 ```
 
-Compléter le fichier [accordeon.css](/src/css/components/accordeon.css) et visualiser l'effet sur [index.html](/index.html) .
+Ce qui a été fait :
 
-Vous devez obtenir comme la premiére video sur Moodle.
+- chaque `details` est une carte (bordure, coins arrondis, ombre) ;
+- le panneau ouvert a une bordure et une ombre bleues ;
+- l'image du `summary` est en noir et blanc quand le panneau est fermé, en couleur au survol et à l'ouverture ;
+- **les images ne sont jamais étirées** (`width: auto; height: auto; max-width: 100%`) : comme elles ne font que 102 × 77 px, les agrandir les rendrait floues.
 
-Voir https://css-tricks.com/using-styling-the-details-element/
+## 2. Sans JavaScript
 
-# Manuellement sans JS
+Il suffit de cliquer sur un `summary` pour ouvrir ou fermer son panneau. Plusieurs panneaux peuvent alors être ouverts en même temps.
 
-Simplement, cliquez sur les `summary`...
+## 3. Refermer les autres panneaux en JavaScript
 
-# Refermer les autres par code JS
-
-Testez dans la console :
+Test dans la console :
 
 ```js
 accordeon = document.querySelector(".accordeon");
 accordeon.querySelectorAll("details").forEach((det) => (det.open = false));
 ```
 
-À faire, adapter le code dans les fichiers [script.js](/src/js/script.js) pour le faire suite à un clic sur un des `summary`.
+Version finale dans [script.js](src/js/script.js) : au clic sur un `summary`, tous les autres `details` sont refermés.
 
-**Commit** : referme les détails suite à un clic sur un `summary`
+```js
+const accordeon = document.querySelector(".accordeon");
 
-# Version avec [triangle CSS](https://css-tricks.com/snippets/css/css-triangle/)
+accordeon.querySelectorAll("details > summary").forEach((summary) => {
+  summary.addEventListener("click", () => {
+    const current = summary.parentElement;
+    accordeon.querySelectorAll("details").forEach((det) => {
+      if (det !== current) det.open = false;
+    });
+  });
+});
+```
 
-Voir seconde video sur Moodle.
+## 4. Triangle CSS
 
-Pour supprimer le triangle "d'origine" :
+Le triangle d'origine est supprimé :
 
 ```css
 .accordeon > details > summary {
@@ -61,4 +88,9 @@ Pour supprimer le triangle "d'origine" :
 }
 ```
 
-**Faire plusieurs commits** pour chaque étape du CSS
+Il est remplacé par un [triangle CSS](https://css-tricks.com/snippets/css/css-triangle/) dessiné avec des bordures dans `summary::after`, qui pivote de 90° quand le panneau est ouvert.
+
+## Ressources
+
+- [Using & styling the details element – CSS-Tricks](https://css-tricks.com/using-styling-the-details-element/)
+- [CSS triangle – CSS-Tricks](https://css-tricks.com/snippets/css/css-triangle/)
